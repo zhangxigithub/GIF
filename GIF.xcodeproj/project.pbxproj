@@ -7,29 +7,29 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		33256A901D26F86A00F4D207 /* ffmpeg in Resources */ = {isa = PBXBuildFile; fileRef = 33256A8F1D26F7DB00F4D207 /* ffmpeg */; };
 		33A955D11D2652FF00D18FCE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33A955D01D2652FF00D18FCE /* AppDelegate.swift */; };
 		33A955D31D2652FF00D18FCE /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33A955D21D2652FF00D18FCE /* ViewController.swift */; };
 		33A955D51D2652FF00D18FCE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 33A955D41D2652FF00D18FCE /* Assets.xcassets */; };
 		33A955D81D26530000D18FCE /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 33A955D61D26530000D18FCE /* Main.storyboard */; };
-		33A955E01D2653F600D18FCE /* ffmpeg in Resources */ = {isa = PBXBuildFile; fileRef = 33A955DF1D2653F600D18FCE /* ffmpeg */; };
 		33A955E21D26557600D18FCE /* ZXConverter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33A955E11D26557600D18FCE /* ZXConverter.swift */; };
 		33A955E41D265B1900D18FCE /* SwiftyJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33A955E31D265B1900D18FCE /* SwiftyJSON.swift */; };
-		33A955E61D265BEE00D18FCE /* ffprobe in Resources */ = {isa = PBXBuildFile; fileRef = 33A955E51D265BEE00D18FCE /* ffprobe */; };
 		33A955E81D265D7600D18FCE /* DragDropView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33A955E71D265D7600D18FCE /* DragDropView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		33256A8F1D26F7DB00F4D207 /* ffmpeg */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = ffmpeg; sourceTree = "<group>"; };
 		33A955CD1D2652FF00D18FCE /* GIF.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GIF.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		33A955D01D2652FF00D18FCE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		33A955D21D2652FF00D18FCE /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		33A955D41D2652FF00D18FCE /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		33A955D71D26530000D18FCE /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		33A955D91D26530000D18FCE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		33A955DF1D2653F600D18FCE /* ffmpeg */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = ffmpeg; sourceTree = "<group>"; };
 		33A955E11D26557600D18FCE /* ZXConverter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZXConverter.swift; sourceTree = "<group>"; };
 		33A955E31D265B1900D18FCE /* SwiftyJSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftyJSON.swift; sourceTree = "<group>"; };
-		33A955E51D265BEE00D18FCE /* ffprobe */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = ffprobe; sourceTree = "<group>"; };
 		33A955E71D265D7600D18FCE /* DragDropView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DragDropView.swift; sourceTree = "<group>"; };
+		33C3D5541D26BB9200E83FA7 /* GIF.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = GIF.entitlements; sourceTree = "<group>"; };
+		33C3D5551D26E04400E83FA7 /* ffmpeg.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = ffmpeg.entitlements; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -62,8 +62,9 @@
 		33A955CF1D2652FF00D18FCE /* GIF */ = {
 			isa = PBXGroup;
 			children = (
-				33A955DF1D2653F600D18FCE /* ffmpeg */,
-				33A955E51D265BEE00D18FCE /* ffprobe */,
+				33256A8F1D26F7DB00F4D207 /* ffmpeg */,
+				33C3D5541D26BB9200E83FA7 /* GIF.entitlements */,
+				33C3D5551D26E04400E83FA7 /* ffmpeg.entitlements */,
 				33A955E31D265B1900D18FCE /* SwiftyJSON.swift */,
 				33A955D01D2652FF00D18FCE /* AppDelegate.swift */,
 				33A955D21D2652FF00D18FCE /* ViewController.swift */,
@@ -108,6 +109,12 @@
 				TargetAttributes = {
 					33A955CC1D2652FF00D18FCE = {
 						CreatedOnToolsVersion = 7.3.1;
+						DevelopmentTeam = 54TGPDSGF2;
+						SystemCapabilities = {
+							com.apple.Sandbox = {
+								enabled = 1;
+							};
+						};
 					};
 				};
 			};
@@ -135,9 +142,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				33A955D51D2652FF00D18FCE /* Assets.xcassets in Resources */,
-				33A955E01D2653F600D18FCE /* ffmpeg in Resources */,
+				33256A901D26F86A00F4D207 /* ffmpeg in Resources */,
 				33A955D81D26530000D18FCE /* Main.storyboard in Resources */,
-				33A955E61D265BEE00D18FCE /* ffprobe in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -256,11 +262,15 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = GIF/GIF.entitlements;
+				CODE_SIGN_IDENTITY = "Mac Developer";
 				COMBINE_HIDPI_IMAGES = YES;
 				INFOPLIST_FILE = GIF/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = me.zhangxi.GIF;
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				PRODUCT_BUNDLE_IDENTIFIER = me.zhangxi.gif;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Debug;
 		};
@@ -268,11 +278,15 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = GIF/GIF.entitlements;
+				CODE_SIGN_IDENTITY = "Mac Developer";
 				COMBINE_HIDPI_IMAGES = YES;
 				INFOPLIST_FILE = GIF/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = me.zhangxi.GIF;
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				PRODUCT_BUNDLE_IDENTIFIER = me.zhangxi.gif;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "c6c5c71b-3d9a-4c4c-b51e-36e42dc9a5ce";
 			};
 			name = Release;
 		};
@@ -295,6 +309,7 @@
 				33A955DE1D26530000D18FCE /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

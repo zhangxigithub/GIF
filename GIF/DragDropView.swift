@@ -9,7 +9,8 @@
 import Cocoa
 
 protocol DragDropViewDelegate : NSObjectProtocol {
-    func receivedFiles(fils:Array<String>)
+    func receivedFiles(file:String)
+    func receivedErrorType(file:String)
 }
 
 
@@ -51,23 +52,21 @@ class DragDropView: NSView {
         if let pasteboard = sender.draggingPasteboard().propertyListForType(NSFilenamesPboardType) as? NSArray {
             if let path = pasteboard[0] as? String {
                 
-                Swift.print("filePath: \(path)")
-                let c = ZXConverter()
-                let info = c.info(path)
-                
-                
-                let width:CGFloat  = CGFloat(info["streams"][0]["width"].floatValue)
-                let height:CGFloat = CGFloat(info["streams"][0]["height"].floatValue)
-                
-                let size = CGSizeMake(width, height)
-                
-                Swift.print(info)
-                let result = c.convert(path, size: size)
-                
-                Swift.print(NSHomeDirectory())
-                Swift.print(result)
-                
+                self.delegate?.receivedFiles(path)
                 return true
+//                if let suffix = (path as NSString).lastPathComponent.componentsSeparatedByString(".").last
+//                {
+//                    self.delegate?.receivedFiles(path)
+//                    return true
+//                    if suffix == "mov" || suffix == "MOV"
+//                    {
+//                        self.delegate?.receivedFiles(path)
+//                        return true
+//                    }else
+//                    {
+//                        self.delegate?.receivedErrorType(path)
+//                    }
+//                }
             }
         }
         
