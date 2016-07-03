@@ -8,6 +8,7 @@
 
 import Cocoa
 
+let thumbPath  = NSHomeDirectory().stringByAppendingString("/thumb")
 let folderPath  = NSHomeDirectory().stringByAppendingString("/gif")
 let palettePath = NSHomeDirectory().stringByAppendingString("/palette.png")
 
@@ -24,6 +25,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         
         do{
             try fm.createDirectoryAtPath(folderPath, withIntermediateDirectories: true, attributes: nil)
+            try fm.createDirectoryAtPath(thumbPath, withIntermediateDirectories: true, attributes: nil)
         }catch
         {
         }

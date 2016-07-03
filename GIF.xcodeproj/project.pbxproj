@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		33256A901D26F86A00F4D207 /* ffmpeg in Resources */ = {isa = PBXBuildFile; fileRef = 33256A8F1D26F7DB00F4D207 /* ffmpeg */; };
+		33989A6E1D280981008E6F2A /* Priview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33989A6D1D280981008E6F2A /* Priview.swift */; };
+		33989A6F1D28B69C008E6F2A /* ffprobe in Resources */ = {isa = PBXBuildFile; fileRef = 33989A6B1D27EDC6008E6F2A /* ffprobe */; };
+		33989A711D293143008E6F2A /* RangeSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33989A701D293143008E6F2A /* RangeSlider.swift */; };
 		33A955D11D2652FF00D18FCE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33A955D01D2652FF00D18FCE /* AppDelegate.swift */; };
 		33A955D31D2652FF00D18FCE /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33A955D21D2652FF00D18FCE /* ViewController.swift */; };
 		33A955D51D2652FF00D18FCE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 33A955D41D2652FF00D18FCE /* Assets.xcassets */; };
@@ -19,7 +22,10 @@
 
 /* Begin PBXFileReference section */
 		33256A8F1D26F7DB00F4D207 /* ffmpeg */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = ffmpeg; sourceTree = "<group>"; };
-		33A955CD1D2652FF00D18FCE /* GIF.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GIF.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		33989A6B1D27EDC6008E6F2A /* ffprobe */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = ffprobe; sourceTree = "<group>"; };
+		33989A6D1D280981008E6F2A /* Priview.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Priview.swift; sourceTree = "<group>"; };
+		33989A701D293143008E6F2A /* RangeSlider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RangeSlider.swift; sourceTree = "<group>"; };
+		33A955CD1D2652FF00D18FCE /* GIF Works.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "GIF Works.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		33A955D01D2652FF00D18FCE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		33A955D21D2652FF00D18FCE /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		33A955D41D2652FF00D18FCE /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -54,7 +60,7 @@
 		33A955CE1D2652FF00D18FCE /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				33A955CD1D2652FF00D18FCE /* GIF.app */,
+				33A955CD1D2652FF00D18FCE /* GIF Works.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -63,6 +69,7 @@
 			isa = PBXGroup;
 			children = (
 				33256A8F1D26F7DB00F4D207 /* ffmpeg */,
+				33989A6B1D27EDC6008E6F2A /* ffprobe */,
 				33C3D5541D26BB9200E83FA7 /* GIF.entitlements */,
 				33C3D5551D26E04400E83FA7 /* ffmpeg.entitlements */,
 				33A955E31D265B1900D18FCE /* SwiftyJSON.swift */,
@@ -70,6 +77,8 @@
 				33A955D21D2652FF00D18FCE /* ViewController.swift */,
 				33A955E11D26557600D18FCE /* ZXConverter.swift */,
 				33A955E71D265D7600D18FCE /* DragDropView.swift */,
+				33989A6D1D280981008E6F2A /* Priview.swift */,
+				33989A701D293143008E6F2A /* RangeSlider.swift */,
 				33A955D41D2652FF00D18FCE /* Assets.xcassets */,
 				33A955D61D26530000D18FCE /* Main.storyboard */,
 				33A955D91D26530000D18FCE /* Info.plist */,
@@ -80,9 +89,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		33A955CC1D2652FF00D18FCE /* GIF */ = {
+		33A955CC1D2652FF00D18FCE /* GIF Works */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 33A955DC1D26530000D18FCE /* Build configuration list for PBXNativeTarget "GIF" */;
+			buildConfigurationList = 33A955DC1D26530000D18FCE /* Build configuration list for PBXNativeTarget "GIF Works" */;
 			buildPhases = (
 				33A955C91D2652FF00D18FCE /* Sources */,
 				33A955CA1D2652FF00D18FCE /* Frameworks */,
@@ -92,9 +101,9 @@
 			);
 			dependencies = (
 			);
-			name = GIF;
+			name = "GIF Works";
 			productName = GIF;
-			productReference = 33A955CD1D2652FF00D18FCE /* GIF.app */;
+			productReference = 33A955CD1D2652FF00D18FCE /* GIF Works.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -131,7 +140,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				33A955CC1D2652FF00D18FCE /* GIF */,
+				33A955CC1D2652FF00D18FCE /* GIF Works */,
 			);
 		};
 /* End PBXProject section */
@@ -144,6 +153,7 @@
 				33A955D51D2652FF00D18FCE /* Assets.xcassets in Resources */,
 				33256A901D26F86A00F4D207 /* ffmpeg in Resources */,
 				33A955D81D26530000D18FCE /* Main.storyboard in Resources */,
+				33989A6F1D28B69C008E6F2A /* ffprobe in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -158,6 +168,8 @@
 				33A955D31D2652FF00D18FCE /* ViewController.swift in Sources */,
 				33A955E21D26557600D18FCE /* ZXConverter.swift in Sources */,
 				33A955D11D2652FF00D18FCE /* AppDelegate.swift in Sources */,
+				33989A6E1D280981008E6F2A /* Priview.swift in Sources */,
+				33989A711D293143008E6F2A /* RangeSlider.swift in Sources */,
 				33A955E41D265B1900D18FCE /* SwiftyJSON.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -302,7 +314,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		33A955DC1D26530000D18FCE /* Build configuration list for PBXNativeTarget "GIF" */ = {
+		33A955DC1D26530000D18FCE /* Build configuration list for PBXNativeTarget "GIF Works" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				33A955DD1D26530000D18FCE /* Debug */,

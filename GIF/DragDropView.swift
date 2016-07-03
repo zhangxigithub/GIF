@@ -52,6 +52,13 @@ class DragDropView: NSView {
         if let pasteboard = sender.draggingPasteboard().propertyListForType(NSFilenamesPboardType) as? NSArray {
             if let path = pasteboard[0] as? String {
                 
+                if let suffix = (path as NSString).lastPathComponent.componentsSeparatedByString(".").last
+            {
+                if suffix.lowercaseString == "vob"
+                {
+                    self.delegate?.receivedErrorType(path)
+                }
+            }
                 self.delegate?.receivedFiles(path)
                 return true
 //                if let suffix = (path as NSString).lastPathComponent.componentsSeparatedByString(".").last
