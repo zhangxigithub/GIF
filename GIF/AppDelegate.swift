@@ -8,9 +8,9 @@
 
 import Cocoa
 
-let thumbPath  = NSHomeDirectory().stringByAppendingString("/thumb")
-let folderPath  = NSHomeDirectory().stringByAppendingString("/gif")
-let palettePath = NSHomeDirectory().stringByAppendingString("/palette.png")
+let thumbPath  = NSHomeDirectory().stringByAppendingString("/Documents/thumb")
+let folderPath  = NSHomeDirectory().stringByAppendingString("/Documents/gif")
+let palettePath = NSHomeDirectory().stringByAppendingString("/Documents/palette.png")
 
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate {

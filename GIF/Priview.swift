@@ -19,6 +19,10 @@ class Priview: NSView {
     var frameIndex:Int = 0
         {
         didSet{
+            if images == nil
+            {
+                return
+            }
             if frameIndex < self.images.count
             {
                 Swift.print(frameIndex)

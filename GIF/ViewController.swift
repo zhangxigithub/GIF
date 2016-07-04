@@ -10,7 +10,7 @@ import Cocoa
 import Foundation
 
 
-class ViewController: NSViewController,DragDropViewDelegate,RangeSliderDelegate {
+class ViewController: NSViewController,DragDropViewDelegate,RangeSliderDelegate,NSTextFieldDelegate {
     
     @IBOutlet weak var preview: Priview!
     @IBOutlet weak var bg: NSImageView!
@@ -18,6 +18,12 @@ class ViewController: NSViewController,DragDropViewDelegate,RangeSliderDelegate 
     
     @IBOutlet weak var rangeSlider: RangeSlider!
     @IBOutlet weak var slider: NSSlider!
+    
+    
+    @IBOutlet weak var quality: NSPopUpButton!
+    @IBOutlet weak var fps: NSPopUpButton!
+    
+    
     
     @IBOutlet weak var indicator: NSProgressIndicator!
     
@@ -27,10 +33,35 @@ class ViewController: NSViewController,DragDropViewDelegate,RangeSliderDelegate 
     
     
     
+    override func controlTextDidChange(obj: NSNotification) {
+        
+        if gif == nil
+        {
+            return
+        }
+        
+        if let textField = obj.object as? NSTextField
+        {
+            let value = CGFloat(textField.floatValue)
+            print(value)
+            
+            
+            if lock
+            {
+                if textField == widthLabel
+                {
+                    heightLabel.integerValue = Int(value * gif!.height / gif!.width)
+                }else
+                {
+                    widthLabel.integerValue  = Int(value * gif!.width / gif!.height)
+                }
+            }
+            gif?.wantWidth  = CGFloat(widthLabel.floatValue)
+            gif?.wantHeight = CGFloat(heightLabel.floatValue)
+        }
+    }
     
-    //var thumb:[String]!
-    
-    //var gifFile:String?
+
     
     var lock:Bool = true{
         didSet{
@@ -46,14 +77,39 @@ class ViewController: NSViewController,DragDropViewDelegate,RangeSliderDelegate 
     }
     @IBAction func create(sender: AnyObject) {
         
+        if gif == nil
+        {
+            return
+        }
+        
+        gif!.fps = fps.selectedItem!.tag
+        
+        
+        
+        gif!.ss = String(format: "%.2f",min(self.rangeSlider.startTime,self.rangeSlider.endTime))
+        gif!.to = String(format: "%.2f",max(self.rangeSlider.startTime,self.rangeSlider.endTime))
+        
+        gif!.low = false
+        gif!.compress = true
+
+        
+        switch self.quality.selectedItem?.tag ?? 0{
+        case 1: gif!.low = true
+        case 2: gif!.quality = 80
+        case 3: gif!.quality = 30
+        case 4: gif!.quality = 10
+        case 5: gif!.compress = false
+        default: break
+        }
         bg.image = NSImage(named: "loading")
         indicator.hidden = false
         indicator.startAnimation(nil)
         
+        Swift.print(fps.selectedItem)
         
         let c = ZXConverter()
         
-        c.convert(gif!.path, complete: { (success,path) in
+        c.convert(gif!, complete: { (success,path) in
             
             if success
             {
@@ -76,19 +132,20 @@ class ViewController: NSViewController,DragDropViewDelegate,RangeSliderDelegate 
         
         self.startLoading()
 
-        
         c.loadGIF(file) { (gif,error) in
+
             print(gif)
             
-            if gif != nil
+            let info = gif.valid()
+            if info.valid
             {
                 self.gif = gif
                 self.startLoading()
-                self.showPreview(gif!)
-                self.configOptions(gif!)
+                self.showPreview(gif)
+                self.configOptions(gif)
             }else
             {
-                self.showError(error)
+                self.showError(info.error)
             }
         }
         
@@ -155,6 +212,7 @@ class ViewController: NSViewController,DragDropViewDelegate,RangeSliderDelegate 
     
     func save(file:String)
     {
+        Swift.print(file)
         let panel = NSSavePanel()
         panel.nameFieldStringValue = (file as NSString).lastPathComponent
         panel.beginWithCompletionHandler { (result) in
@@ -192,6 +250,10 @@ class ViewController: NSViewController,DragDropViewDelegate,RangeSliderDelegate 
         self.indicator.hidden = true
         self.rangeSlider.delegate = self
         self.preview.hidden = true
+        
+        self.fps.selectItemWithTag(12)
+        self.quality.selectItemWithTag(1)
+
     }
     
     override var representedObject: AnyObject? {

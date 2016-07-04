@@ -18,6 +18,7 @@
 		33A955E21D26557600D18FCE /* ZXConverter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33A955E11D26557600D18FCE /* ZXConverter.swift */; };
 		33A955E41D265B1900D18FCE /* SwiftyJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33A955E31D265B1900D18FCE /* SwiftyJSON.swift */; };
 		33A955E81D265D7600D18FCE /* DragDropView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33A955E71D265D7600D18FCE /* DragDropView.swift */; };
+		33A955F01D2A477600D18FCE /* gifsicle in Resources */ = {isa = PBXBuildFile; fileRef = 33A955EF1D2A477600D18FCE /* gifsicle */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -34,6 +35,7 @@
 		33A955E11D26557600D18FCE /* ZXConverter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZXConverter.swift; sourceTree = "<group>"; };
 		33A955E31D265B1900D18FCE /* SwiftyJSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftyJSON.swift; sourceTree = "<group>"; };
 		33A955E71D265D7600D18FCE /* DragDropView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DragDropView.swift; sourceTree = "<group>"; };
+		33A955EF1D2A477600D18FCE /* gifsicle */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = gifsicle; sourceTree = "<group>"; };
 		33C3D5541D26BB9200E83FA7 /* GIF.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = GIF.entitlements; sourceTree = "<group>"; };
 		33C3D5551D26E04400E83FA7 /* ffmpeg.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = ffmpeg.entitlements; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -70,6 +72,7 @@
 			children = (
 				33256A8F1D26F7DB00F4D207 /* ffmpeg */,
 				33989A6B1D27EDC6008E6F2A /* ffprobe */,
+				33A955EF1D2A477600D18FCE /* gifsicle */,
 				33C3D5541D26BB9200E83FA7 /* GIF.entitlements */,
 				33C3D5551D26E04400E83FA7 /* ffmpeg.entitlements */,
 				33A955E31D265B1900D18FCE /* SwiftyJSON.swift */,
@@ -154,6 +157,7 @@
 				33256A901D26F86A00F4D207 /* ffmpeg in Resources */,
 				33A955D81D26530000D18FCE /* Main.storyboard in Resources */,
 				33989A6F1D28B69C008E6F2A /* ffprobe in Resources */,
+				33A955F01D2A477600D18FCE /* gifsicle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
