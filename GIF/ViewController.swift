@@ -85,9 +85,7 @@ class ViewController: NSViewController,DragDropViewDelegate,RangeSliderDelegate,
         gif!.fps = fps.selectedItem!.tag
         
         
-        
-        gif!.ss = String(format: "%.2f",min(self.rangeSlider.startTime,self.rangeSlider.endTime))
-        gif!.to = String(format: "%.2f",max(self.rangeSlider.startTime,self.rangeSlider.endTime))
+        gif!.range = (ss:String(format: "%.2f",min(self.rangeSlider.startTime,self.rangeSlider.endTime)),to:String(format: "%.2f",max(self.rangeSlider.startTime,self.rangeSlider.endTime)))
         
         gif!.low = false
         gif!.compress = true
@@ -126,14 +124,15 @@ class ViewController: NSViewController,DragDropViewDelegate,RangeSliderDelegate,
     
     var gif : GIF?
     
-    func receivedFiles(file: String) {
+    func loadFile(file: String)
+    {
         
         let c = ZXConverter()
         
         self.startLoading()
-
+        
         c.loadGIF(file) { (gif,error) in
-
+            
             print(gif)
             
             let info = gif.valid()
@@ -149,6 +148,43 @@ class ViewController: NSViewController,DragDropViewDelegate,RangeSliderDelegate,
             }
         }
         
+    }
+    func convertFile(file: String)
+    {
+        let gif  = GIF()
+        
+        gif.path = file
+
+        gif.fps = 12
+        gif.low = false
+        gif.compress = true
+        gif.quality = 30
+        
+
+        bg.image = NSImage(named: "loading")
+        indicator.hidden = false
+        indicator.startAnimation(nil)
+        
+        let c = ZXConverter()
+        
+        c.convert(gif, complete: { (success,path) in
+            
+            if success
+            {
+                self.save(path!)
+            }else
+            {
+                self.showErrorFile()
+            }
+            self.stopLoading()
+        })
+        
+
+    }
+    
+    func receivedFiles(file: String)
+    {
+        convertFile(file)
     }
     
     func configOptions(gif:GIF)

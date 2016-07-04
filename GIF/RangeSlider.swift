@@ -32,8 +32,8 @@ class RangeSlider: NSView {
     var begin : NSImageView!
     var end   : NSImageView!
     
-    public var startTime: NSTimeInterval = 0.0
-    public var endTime : NSTimeInterval = 0.0
+    var startTime: NSTimeInterval = 0.0
+    var endTime : NSTimeInterval = 0.0
     
     var line:NSView!
     var durationLine:NSView!

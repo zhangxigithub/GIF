@@ -14,9 +14,9 @@ class GIF: NSObject
     var low      : Bool = false
     var compress : Bool = true
     
-    
-    var ss : String = ""
-    var to : String = ""
+    var range : (ss:String,to:String)? = nil
+    //var ss : String? = nil
+    //var to : String? = nil
     
     var quality:Int = 30
     var fps:Int = 12
@@ -27,7 +27,7 @@ class GIF: NSObject
     var path : String!{
         didSet{
             self.fileName         = (path as NSString).lastPathComponent
-            self.gifFileName      = String(format: "%@.gif",self.fileName.componentsSeparatedByString(".")[0])
+            self.gifFileName      = String(format: "%@.gif",NSUUID().UUIDString)
             self.gifPath          = String(format: "%@/%@",folderPath,gifFileName)
             self.comporesGifPath  = String(format: "%@/c_%@",folderPath,gifFileName)
         }
@@ -36,24 +36,19 @@ class GIF: NSObject
     var duration:NSTimeInterval!
     
     
-    var width:CGFloat!{
+    var videoSize:CGSize?{
         didSet{
-            wantWidth = width
+            wantSize = videoSize
         }
     }
-    var height:CGFloat!{
-        didSet{
-            wantHeight = height
-        }
-    }
+
+    var wantSize:CGSize?
     
-    var wantWidth:CGFloat!
-    var wantHeight:CGFloat!
     
     override var description: String
         {
         get{
-            return "=====================\npath:\(path)\nduration:\(duration)\nwidth:\(width)\nheight:\(height)\nframes:\(thumb?.count)\n\n====================="
+            return "=====================\npath:\(path)\nfileName:\(fileName)\ngifFileName:\(gifFileName)\nduration:\(duration)\nvideoSize:\(videoSize)\nwantSize:\(wantSize)\nframes:\(thumb?.count)\n\n====================="
         }
     }
     func  valid() -> (valid:Bool,error:String) {
@@ -71,12 +66,12 @@ class GIF: NSObject
         {
             return  (valid:false,error:"Can't get duration info.")
         }
-        if width == nil
+        if wantSize == nil
         {
             return  (valid:false,error:"Can't get video width.")
         }
 
-        if height == nil
+        if videoSize == nil
         {
             return  (valid:false,error:"Can't get video height.")
         }
@@ -121,13 +116,33 @@ class ZXConverter: NSObject {
             if gif.low
             {
                 let lavfi = String(format: "fps=%d,scale=%d:%d:flags=lanczos",Int(gif.fps),Int(gif.wantWidth),Int(gif.wantHeight))
-                result = result + shell(self.ffmpeg,arguments:["-ss",gif.ss,"-i",gif.path,"-to",gif.to,"-lavfi",lavfi,"-gifflags","+transdiff","-y",gif.gifPath])
+                
+                if gif.range == nil
+                {
+                    result = result + shell(self.ffmpeg,arguments:["-i",gif.path,"-lavfi",lavfi,"-gifflags","+transdiff","-y",gif.gifPath])
+                }else
+                {
+                    result = result + shell(self.ffmpeg,arguments:["-ss",gif.range!.ss,"-i",gif.path,"-to",gif.range!.to,"-lavfi",lavfi,"-gifflags","+transdiff","-y",gif.gifPath])
+                }
+                
+
             }else
             {
                 let vf = String(format: "fps=%d,scale=%d:%d:flags=lanczos,palettegen=stats_mode=diff",Int(gif.fps),Int(gif.wantWidth),Int(gif.wantHeight))
                 let lavfi = String(format: "fps=%d,scale=%d:%d:flags=lanczos  [x]; [x][1:v] paletteuse=dither=floyd_steinberg",Int(gif.fps),Int(gif.wantWidth),Int(gif.wantHeight))
-                result = result + shell(self.ffmpeg,arguments:["-i",gif.path,"-vf",vf,"-y",palettePath])
-                result = result + shell(self.ffmpeg,arguments:["-i",gif.path,"-i",palettePath,"-lavfi",lavfi,"-gifflags","+transdiff","-y",gif.gifPath])
+                
+                if gif.range == nil
+                {
+                    result = result + shell(self.ffmpeg,arguments:["-i",gif.path,"-vf",vf,"-y",palettePath])
+                    result = result + shell(self.ffmpeg,arguments:["-i",gif.path,"-i",palettePath,"-lavfi",lavfi,"-gifflags","+transdiff","-y",gif.gifPath])
+                }else
+                {
+                    result = result + shell(self.ffmpeg,arguments:["-ss",gif.range!.ss,"-i",gif.path,"-to",gif.range!.to,"-vf",vf,"-y",palettePath])
+                    result = result + shell(self.ffmpeg,arguments:["-ss",gif.range!.ss,"-i",gif.path,"-to",gif.range!.to,"-i",palettePath,"-lavfi",lavfi,"-gifflags","+transdiff","-y",gif.gifPath])
+                }
+                
+                
+
             
             }
             
