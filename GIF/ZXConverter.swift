@@ -17,9 +17,45 @@ class GIF: NSObject
     var width:CGFloat!
     var height:CGFloat!
     
+    override var description: String
+        {
+        get{
+            return "path:\(path)\nduration:\(duration)\nwidth:\(width)\nheight:\(height)\n"
+        }
+    }
+    func  valid() -> (valid:Bool,error:String) {
+
+        if path == nil
+        {
+            return  (valid:false,error:"Can't get the file.")
+        }
+        
+        if thumb == nil
+        {
+            return  (valid:false,error:"Can't create thumbnails.")
+        }
+        if duration == nil
+        {
+            return  (valid:false,error:"Can't get duration info.")
+        }
+        if width == nil
+        {
+            return  (valid:false,error:"Can't get video width.")
+        }
+
+        if height == nil
+        {
+            return  (valid:false,error:"Can't get video height.")
+        }
+        return (valid:true,error:"Sucess")
+    }
 }
 
-
+/*
+ http://blog.csdn.net/stone_wzf/article/details/45570021
+ 
+ 
+ */
 class ZXConverter: NSObject {
     
     let ffmpeg  = NSBundle.mainBundle().pathForResource("ffmpeg", ofType: "")!
@@ -124,8 +160,9 @@ class ZXConverter: NSObject {
         
         
         dispatch_async(dispatch_get_global_queue(QOS_CLASS_USER_INITIATED, 0), { () -> Void in
-            
-            let arguments = ["-v","quiet","-print_format","json","-show_format","-show_streams",path]
+            //"-show_streams"
+            //"-show_format"
+            let arguments = ["-v","quiet","-print_format","json","-select_streams","v","-show_format","-show_entries","stream=width,height",path]
             let result = shell(self.ffprobe,arguments:arguments)
             let data = try? NSJSONSerialization.JSONObjectWithData(result.dataUsingEncoding(NSUTF8StringEncoding)!, options:.AllowFragments)
             
@@ -142,6 +179,8 @@ class ZXConverter: NSObject {
                 gif.duration = json["format"]["duration"].doubleValue
                 
                 //542 309
+                
+                print(gif)
                 
                 var scale = ""
                 if gif.width/542 <  gif.height/309

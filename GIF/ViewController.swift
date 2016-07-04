@@ -21,6 +21,13 @@ class ViewController: NSViewController,DragDropViewDelegate,RangeSliderDelegate 
     
     @IBOutlet weak var indicator: NSProgressIndicator!
     
+    
+    @IBOutlet weak var widthLabel: NSTextField!
+    @IBOutlet var heightLabel: NSTextField!
+    
+    
+    
+    
     //var thumb:[String]!
     
     //var gifFile:String?
@@ -65,12 +72,11 @@ class ViewController: NSViewController,DragDropViewDelegate,RangeSliderDelegate 
     
     func receivedFiles(file: String) {
         
+        let c = ZXConverter()
         
         self.startLoading()
 
-        let c = ZXConverter()
         
-
         c.loadGIF(file) { (gif,error) in
             print(gif)
             
@@ -79,12 +85,19 @@ class ViewController: NSViewController,DragDropViewDelegate,RangeSliderDelegate 
                 self.gif = gif
                 self.startLoading()
                 self.showPreview(gif!)
+                self.configOptions(gif!)
             }else
             {
                 self.showError(error)
             }
         }
         
+    }
+    
+    func configOptions(gif:GIF)
+    {
+        self.widthLabel.stringValue = String(format:"%0.f",gif.width)
+        self.heightLabel.stringValue = String(format:"%0.f",gif.height)
     }
     
     func showPreview(gif:GIF)

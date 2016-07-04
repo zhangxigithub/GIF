@@ -29,7 +29,7 @@
                                             <menu key="submenu" title="Services" systemMenu="services" id="hz9-B4-Xy5"/>
                                         </menuItem>
                                         <menuItem isSeparatorItem="YES" id="4je-JR-u6R"/>
-                                        <menuItem title="Hide GIF" keyEquivalent="h" id="Olw-nP-bQN">
+                                        <menuItem title="Hide GIF Works" keyEquivalent="h" id="Olw-nP-bQN">
                                             <connections>
                                                 <action selector="hide:" target="Ady-hI-5gd" id="PnN-Uc-m68"/>
                                             </connections>
@@ -47,7 +47,7 @@
                                             </connections>
                                         </menuItem>
                                         <menuItem isSeparatorItem="YES" id="kCx-OE-vgT"/>
-                                        <menuItem title="Quit GIF" keyEquivalent="q" id="4sb-4s-VLi">
+                                        <menuItem title="Quit GIF Works" keyEquivalent="q" id="4sb-4s-VLi">
                                             <connections>
                                                 <action selector="terminate:" target="Ady-hI-5gd" id="Te7-pn-YzF"/>
                                             </connections>
@@ -625,10 +625,12 @@ Cgo
                     <connections>
                         <outlet property="bg" destination="l8i-ob-tZ6" id="Ro3-SY-aRt"/>
                         <outlet property="dragView" destination="O1U-eT-G8l" id="tfa-Xw-ozz"/>
+                        <outlet property="heightLabel" destination="fhN-jd-n6q" id="nDZ-aF-qeJ"/>
                         <outlet property="indicator" destination="sbu-L4-SMo" id="44g-mR-Q5D"/>
                         <outlet property="lockButton" destination="neN-DX-hun" id="iJN-ck-Tjh"/>
                         <outlet property="preview" destination="uxp-Ut-0mH" id="dzO-LY-FnM"/>
                         <outlet property="rangeSlider" destination="Tua-X6-0Ri" id="5Uu-LG-jI0"/>
+                        <outlet property="widthLabel" destination="93f-37-5L2" id="lOT-9a-rMC"/>
                     </connections>
                 </viewController>
                 <customObject id="rPt-NT-nkU" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
