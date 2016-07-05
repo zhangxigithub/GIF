@@ -19,10 +19,25 @@
 		33A955E41D265B1900D18FCE /* SwiftyJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33A955E31D265B1900D18FCE /* SwiftyJSON.swift */; };
 		33A955E81D265D7600D18FCE /* DragDropView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33A955E71D265D7600D18FCE /* DragDropView.swift */; };
 		33A955F01D2A477600D18FCE /* gifsicle in Resources */ = {isa = PBXBuildFile; fileRef = 33A955EF1D2A477600D18FCE /* gifsicle */; };
+		33A955F31D2B593C00D18FCE /* DragDropView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33A955E71D265D7600D18FCE /* DragDropView.swift */; };
+		33A955F51D2B593C00D18FCE /* ZXConverter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33A955E11D26557600D18FCE /* ZXConverter.swift */; };
+		33A955F61D2B593C00D18FCE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33A955D01D2652FF00D18FCE /* AppDelegate.swift */; };
+		33A955F71D2B593C00D18FCE /* Priview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33989A6D1D280981008E6F2A /* Priview.swift */; };
+		33A955F81D2B593C00D18FCE /* RangeSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33989A701D293143008E6F2A /* RangeSlider.swift */; };
+		33A955F91D2B593C00D18FCE /* SwiftyJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33A955E31D265B1900D18FCE /* SwiftyJSON.swift */; };
+		33A955FC1D2B593C00D18FCE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 33A955D41D2652FF00D18FCE /* Assets.xcassets */; };
+		33A955FD1D2B593C00D18FCE /* ffmpeg in Resources */ = {isa = PBXBuildFile; fileRef = 33256A8F1D26F7DB00F4D207 /* ffmpeg */; };
+		33A955FF1D2B593C00D18FCE /* ffprobe in Resources */ = {isa = PBXBuildFile; fileRef = 33989A6B1D27EDC6008E6F2A /* ffprobe */; };
+		33A956001D2B593C00D18FCE /* gifsicle in Resources */ = {isa = PBXBuildFile; fileRef = 33A955EF1D2A477600D18FCE /* gifsicle */; };
+		33A956091D2B59E200D18FCE /* MainPro.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 33A956061D2B59BE00D18FCE /* MainPro.storyboard */; };
+		33A9560C1D2B5A3C00D18FCE /* GIFViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33A9560A1D2B5A3C00D18FCE /* GIFViewController.swift */; };
+		33A9560E1D2B5A3F00D18FCE /* GIFViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33A9560A1D2B5A3C00D18FCE /* GIFViewController.swift */; };
+		33A9560F1D2B5A4200D18FCE /* ViewControllerPro.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33A9560B1D2B5A3C00D18FCE /* ViewControllerPro.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		33256A8F1D26F7DB00F4D207 /* ffmpeg */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = ffmpeg; sourceTree = "<group>"; };
+		33787AE21D2B628200A12D1C /* pro.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = pro.plist; sourceTree = "<group>"; };
 		33989A6B1D27EDC6008E6F2A /* ffprobe */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = ffprobe; sourceTree = "<group>"; };
 		33989A6D1D280981008E6F2A /* Priview.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Priview.swift; sourceTree = "<group>"; };
 		33989A701D293143008E6F2A /* RangeSlider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RangeSlider.swift; sourceTree = "<group>"; };
@@ -36,12 +51,23 @@
 		33A955E31D265B1900D18FCE /* SwiftyJSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftyJSON.swift; sourceTree = "<group>"; };
 		33A955E71D265D7600D18FCE /* DragDropView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DragDropView.swift; sourceTree = "<group>"; };
 		33A955EF1D2A477600D18FCE /* gifsicle */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = gifsicle; sourceTree = "<group>"; };
+		33A956041D2B593C00D18FCE /* GIF Works Pro.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "GIF Works Pro.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		33A956071D2B59BE00D18FCE /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainPro.storyboard; sourceTree = "<group>"; };
+		33A9560A1D2B5A3C00D18FCE /* GIFViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GIFViewController.swift; sourceTree = "<group>"; };
+		33A9560B1D2B5A3C00D18FCE /* ViewControllerPro.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewControllerPro.swift; sourceTree = "<group>"; };
 		33C3D5541D26BB9200E83FA7 /* GIF.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = GIF.entitlements; sourceTree = "<group>"; };
 		33C3D5551D26E04400E83FA7 /* ffmpeg.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = ffmpeg.entitlements; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		33A955CA1D2652FF00D18FCE /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		33A955FA1D2B593C00D18FCE /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -63,6 +89,7 @@
 			isa = PBXGroup;
 			children = (
 				33A955CD1D2652FF00D18FCE /* GIF Works.app */,
+				33A956041D2B593C00D18FCE /* GIF Works Pro.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -70,6 +97,7 @@
 		33A955CF1D2652FF00D18FCE /* GIF */ = {
 			isa = PBXGroup;
 			children = (
+				33A956101D2B5C3000D18FCE /* Pro */,
 				33256A8F1D26F7DB00F4D207 /* ffmpeg */,
 				33989A6B1D27EDC6008E6F2A /* ffprobe */,
 				33A955EF1D2A477600D18FCE /* gifsicle */,
@@ -77,16 +105,27 @@
 				33C3D5551D26E04400E83FA7 /* ffmpeg.entitlements */,
 				33A955E31D265B1900D18FCE /* SwiftyJSON.swift */,
 				33A955D01D2652FF00D18FCE /* AppDelegate.swift */,
+				33A9560A1D2B5A3C00D18FCE /* GIFViewController.swift */,
 				33A955D21D2652FF00D18FCE /* ViewController.swift */,
 				33A955E11D26557600D18FCE /* ZXConverter.swift */,
 				33A955E71D265D7600D18FCE /* DragDropView.swift */,
+				33A955D61D26530000D18FCE /* Main.storyboard */,
 				33989A6D1D280981008E6F2A /* Priview.swift */,
 				33989A701D293143008E6F2A /* RangeSlider.swift */,
 				33A955D41D2652FF00D18FCE /* Assets.xcassets */,
-				33A955D61D26530000D18FCE /* Main.storyboard */,
 				33A955D91D26530000D18FCE /* Info.plist */,
+				33787AE21D2B628200A12D1C /* pro.plist */,
 			);
 			path = GIF;
+			sourceTree = "<group>";
+		};
+		33A956101D2B5C3000D18FCE /* Pro */ = {
+			isa = PBXGroup;
+			children = (
+				33A956061D2B59BE00D18FCE /* MainPro.storyboard */,
+				33A9560B1D2B5A3C00D18FCE /* ViewControllerPro.swift */,
+			);
+			name = Pro;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -107,6 +146,23 @@
 			name = "GIF Works";
 			productName = GIF;
 			productReference = 33A955CD1D2652FF00D18FCE /* GIF Works.app */;
+			productType = "com.apple.product-type.application";
+		};
+		33A955F11D2B593C00D18FCE /* GIF Works Pro */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 33A956011D2B593C00D18FCE /* Build configuration list for PBXNativeTarget "GIF Works Pro" */;
+			buildPhases = (
+				33A955F21D2B593C00D18FCE /* Sources */,
+				33A955FA1D2B593C00D18FCE /* Frameworks */,
+				33A955FB1D2B593C00D18FCE /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "GIF Works Pro";
+			productName = GIF;
+			productReference = 33A956041D2B593C00D18FCE /* GIF Works Pro.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -144,6 +200,7 @@
 			projectRoot = "";
 			targets = (
 				33A955CC1D2652FF00D18FCE /* GIF Works */,
+				33A955F11D2B593C00D18FCE /* GIF Works Pro */,
 			);
 		};
 /* End PBXProject section */
@@ -161,6 +218,18 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		33A955FB1D2B593C00D18FCE /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				33A955FC1D2B593C00D18FCE /* Assets.xcassets in Resources */,
+				33A955FD1D2B593C00D18FCE /* ffmpeg in Resources */,
+				33A956091D2B59E200D18FCE /* MainPro.storyboard in Resources */,
+				33A955FF1D2B593C00D18FCE /* ffprobe in Resources */,
+				33A956001D2B593C00D18FCE /* gifsicle in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -175,6 +244,22 @@
 				33989A6E1D280981008E6F2A /* Priview.swift in Sources */,
 				33989A711D293143008E6F2A /* RangeSlider.swift in Sources */,
 				33A955E41D265B1900D18FCE /* SwiftyJSON.swift in Sources */,
+				33A9560C1D2B5A3C00D18FCE /* GIFViewController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		33A955F21D2B593C00D18FCE /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				33A955F31D2B593C00D18FCE /* DragDropView.swift in Sources */,
+				33A9560F1D2B5A4200D18FCE /* ViewControllerPro.swift in Sources */,
+				33A955F51D2B593C00D18FCE /* ZXConverter.swift in Sources */,
+				33A955F61D2B593C00D18FCE /* AppDelegate.swift in Sources */,
+				33A955F71D2B593C00D18FCE /* Priview.swift in Sources */,
+				33A955F81D2B593C00D18FCE /* RangeSlider.swift in Sources */,
+				33A955F91D2B593C00D18FCE /* SwiftyJSON.swift in Sources */,
+				33A9560E1D2B5A3F00D18FCE /* GIFViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -187,6 +272,14 @@
 				33A955D71D26530000D18FCE /* Base */,
 			);
 			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		33A956061D2B59BE00D18FCE /* MainPro.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				33A956071D2B59BE00D18FCE /* Base */,
+			);
+			name = MainPro.storyboard;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -312,6 +405,44 @@
 			};
 			name = Release;
 		};
+		33A956021D2B593C00D18FCE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = GIF/GIF.entitlements;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = GIF/pro.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/GIF",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				PRODUCT_BUNDLE_IDENTIFIER = me.zhangxi.gifpro;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+			};
+			name = Debug;
+		};
+		33A956031D2B593C00D18FCE /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = GIF/GIF.entitlements;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = GIF/pro.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/GIF",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				PRODUCT_BUNDLE_IDENTIFIER = me.zhangxi.gifpro;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "c6c5c71b-3d9a-4c4c-b51e-36e42dc9a5ce";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -329,6 +460,15 @@
 			buildConfigurations = (
 				33A955DD1D26530000D18FCE /* Debug */,
 				33A955DE1D26530000D18FCE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		33A956011D2B593C00D18FCE /* Build configuration list for PBXNativeTarget "GIF Works Pro" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				33A956021D2B593C00D18FCE /* Debug */,
+				33A956031D2B593C00D18FCE /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

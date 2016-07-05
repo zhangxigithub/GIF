@@ -10,7 +10,7 @@ import Cocoa
 
 let thumbPath  = NSHomeDirectory().stringByAppendingString("/Documents/thumb")
 let folderPath  = NSHomeDirectory().stringByAppendingString("/Documents/gif")
-let palettePath = NSHomeDirectory().stringByAppendingString("/Documents/palette.png")
+//let palettePath = NSHomeDirectory().stringByAppendingString("/Documents/palette.png")
 
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate {

@@ -42,8 +42,8 @@ class RangeSlider: NSView {
     let blue = NSColor(red: 45.0/255.0, green: 146.0/255.0, blue: 1, alpha: 1).CGColor
     let gray = NSColor(red: 184.0/255.0, green: 184.0/255.0, blue: 184.0/255.0, alpha: 1).CGColor
     let dotSize = CGSizeMake(14, 14)
-    let leftSpace:CGFloat = 40
-    let rightSpace:CGFloat = 40
+    let leftSpace:CGFloat  = 20
+    let rightSpace:CGFloat = 20
     
     let labelWidth:CGFloat  = 60
     let labelHeight:CGFloat = 20

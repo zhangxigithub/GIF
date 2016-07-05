@@ -64,7 +64,6 @@ class ViewController: GIFViewController,DragDropViewDelegate,RangeSliderDelegate
         }
     }
     
-
     
     var lock:Bool = true{
         didSet{
@@ -90,7 +89,6 @@ class ViewController: GIFViewController,DragDropViewDelegate,RangeSliderDelegate
         
         gif!.range = (ss:String(format: "%.2f",min(self.rangeSlider.startTime,self.rangeSlider.endTime)),to:String(format: "%.2f",max(self.rangeSlider.startTime,self.rangeSlider.endTime)))
         
-
 
         switch self.quality.selectedItem?.tag ?? 0{
         case 1: gif!.quality = Quality.VeryLow
@@ -150,38 +148,11 @@ class ViewController: GIFViewController,DragDropViewDelegate,RangeSliderDelegate
         }
         
     }
-    func convertFile(file: String)
-    {
-        let theGIF  = GIF()
-        
-        theGIF.path = file
-        theGIF.fps = 12
-        theGIF.quality = Quality.Normal
-        
 
-        bg.image = NSImage(named: "loading")
-        indicator.hidden = false
-        indicator.startAnimation(nil)
-        
-        let c = ZXConverter()
-        
-        c.convert(theGIF, complete: { (success,path) in
-            
-            if success
-            {
-                self.save(path!)
-            }else
-            {
-                self.showErrorFile()
-            }
-            self.stopLoading()
-        })
-
-    }
     
     func receivedFiles(file: String)
     {
-        convertFile(file)
+        self.loadFile(file)
     }
     
     func configOptions(gif:GIF)
@@ -202,43 +173,8 @@ class ViewController: GIFViewController,DragDropViewDelegate,RangeSliderDelegate
         
     }
     
-    func startLoading()
-    {
-        bg.image = NSImage(named: "loading")
-        indicator.hidden = false
-        indicator.startAnimation(nil)
-    }
-    func stopLoading()
-    {
-        self.bg.image = NSImage(named: "bg")
-        self.indicator.hidden = true
-        self.indicator.stopAnimation(nil)
-    }
 
     
-
-//    func showError(msg:String)
-//    {
-//        let alert = NSAlert()
-//        alert.messageText = msg
-//        alert.addButtonWithTitle("OK")
-//        alert.beginSheetModalForWindow(self.view.window!, completionHandler: nil )
-//    }
-//    func showErrorFile()
-//    {
-//        let alert = NSAlert()
-//        alert.messageText = "Error,only mov file can be accepted."
-//        alert.addButtonWithTitle("OK")
-//        alert.beginSheetModalForWindow(self.view.window!, completionHandler: nil )
-//    }
-//    func receivedErrorType(file:String)
-//    {
-//        let alert = NSAlert()
-//        alert.messageText = "Error,only video file can be accepted."
-//        alert.addButtonWithTitle("OK")
-//        
-//        alert.beginSheetModalForWindow(self.view.window!, completionHandler: nil )
-//    }
     
     func save(file:String)
     {
@@ -264,7 +200,18 @@ class ViewController: GIFViewController,DragDropViewDelegate,RangeSliderDelegate
         }
     }
 
-    
+    func startLoading()
+    {
+        bg.image = NSImage(named: "loading")
+        indicator.hidden = false
+        indicator.startAnimation(nil)
+    }
+    func stopLoading()
+    {
+        self.bg.image = NSImage(named: "bg")
+        self.indicator.hidden = true
+        self.indicator.stopAnimation(nil)
+    }
     
     
     func didSelectRange(start: Int, end: Int) {
@@ -273,6 +220,8 @@ class ViewController: GIFViewController,DragDropViewDelegate,RangeSliderDelegate
     func didSelectFrame(index: Int) {
         self.preview.frameIndex = index
     }
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         

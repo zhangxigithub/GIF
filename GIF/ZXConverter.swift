@@ -9,17 +9,44 @@
 import Cocoa
 import Foundation
 
+enum Quality {
+    case VeryLow
+    case Low
+    case Normal
+    case High
+    case VeryHigh
+    
+    func lossy() -> String{
+        switch self {
+        case VeryLow:
+            return ""
+        case Low:
+            return "80"
+        case Normal:
+            return "30"
+        case High:
+            return "10"
+        case VeryHigh:
+            return ""
+        }
+    }
+    
+    func needCompress() -> Bool
+    {
+        return ((self != .VeryLow ) && (self != .VeryHigh))
+    }
+    
+}
+
 class GIF: NSObject
 {
-    var low      : Bool = false
-    var compress : Bool = true
-    
     var range : (ss:String,to:String)? = nil
-    //var ss : String? = nil
-    //var to : String? = nil
-    
-    var quality:Int = 30
+    var quality : Quality = .Normal
     var fps:Int = 12
+    
+    
+    
+    var palettePath : String!
     var gifFileName : String!
     var gifPath : String!
     var comporesGifPath : String!
@@ -30,25 +57,25 @@ class GIF: NSObject
             self.gifFileName      = String(format: "%@.gif",NSUUID().UUIDString)
             self.gifPath          = String(format: "%@/%@",folderPath,gifFileName)
             self.comporesGifPath  = String(format: "%@/c_%@",folderPath,gifFileName)
+            self.palettePath      = String(format: "%@/p_%@",folderPath,gifFileName)
         }
     }
     var thumb : [String]!
     var duration:NSTimeInterval!
     
     
-    var videoSize:CGSize?{
+    var size:CGSize!{
         didSet{
-            wantSize = videoSize
+            wantSize = size
         }
     }
-
     var wantSize:CGSize?
     
     
     override var description: String
         {
         get{
-            return "=====================\npath:\(path)\nfileName:\(fileName)\ngifFileName:\(gifFileName)\nduration:\(duration)\nvideoSize:\(videoSize)\nwantSize:\(wantSize)\nframes:\(thumb?.count)\n\n====================="
+            return "=====================\npath:\(path)\nfileName:\(fileName)\ngifFileName:\(gifFileName)\nduration:\(duration)\nvideoSize:\(size)\nwantSize:\(wantSize)\nframes:\(thumb?.count)\n\n====================="
         }
     }
     func  valid() -> (valid:Bool,error:String) {
@@ -71,11 +98,20 @@ class GIF: NSObject
             return  (valid:false,error:"Can't get video width.")
         }
 
-        if videoSize == nil
+        if size == nil
         {
             return  (valid:false,error:"Can't get video height.")
         }
         return (valid:true,error:"Sucess")
+    }
+    func clean()
+    {
+        let fm  = NSFileManager.defaultManager()
+        do{
+            try fm.removeItemAtPath(gifPath)
+            try fm.removeItemAtPath(comporesGifPath)
+            try fm.removeItemAtPath(palettePath)
+        }catch{}
     }
 }
 
@@ -106,39 +142,57 @@ class ZXConverter: NSObject {
     {
         dispatch_async(dispatch_get_global_queue(QOS_CLASS_USER_INITIATED, 0), { () -> Void in
             
-            do{
-                try self.fm.removeItemAtPath(gif.gifPath)
-                try self.fm.removeItemAtPath(palettePath)
-            }catch{}
+            print(gif.description)
+            gif.clean()
             
             var result = ""
+            let size = gif.wantSize ?? gif.size
             
-            if gif.low
+            if gif.quality == .VeryLow
             {
-                let lavfi = String(format: "fps=%d,scale=%d:%d:flags=lanczos",Int(gif.fps),Int(gif.wantWidth),Int(gif.wantHeight))
-                
-                if gif.range == nil
+                 var arguments = [String]()
+                arguments += ["-i",gif.path,"-lavfi"]
+                if size != nil
                 {
-                    result = result + shell(self.ffmpeg,arguments:["-i",gif.path,"-lavfi",lavfi,"-gifflags","+transdiff","-y",gif.gifPath])
+                    arguments.append(String(format: "fps=%d,scale=%d:%d:flags=lanczos",Int(gif.fps),Int(size!.width),Int(size!.height)))
                 }else
                 {
-                    result = result + shell(self.ffmpeg,arguments:["-ss",gif.range!.ss,"-i",gif.path,"-to",gif.range!.to,"-lavfi",lavfi,"-gifflags","+transdiff","-y",gif.gifPath])
+                    arguments.append(String(format: "fps=%d",Int(gif.fps)))
                 }
                 
-
-            }else
-            {
-                let vf = String(format: "fps=%d,scale=%d:%d:flags=lanczos,palettegen=stats_mode=diff",Int(gif.fps),Int(gif.wantWidth),Int(gif.wantHeight))
-                let lavfi = String(format: "fps=%d,scale=%d:%d:flags=lanczos  [x]; [x][1:v] paletteuse=dither=floyd_steinberg",Int(gif.fps),Int(gif.wantWidth),Int(gif.wantHeight))
-                
-                if gif.range == nil
+                if gif.range != nil
                 {
-                    result = result + shell(self.ffmpeg,arguments:["-i",gif.path,"-vf",vf,"-y",palettePath])
-                    result = result + shell(self.ffmpeg,arguments:["-i",gif.path,"-i",palettePath,"-lavfi",lavfi,"-gifflags","+transdiff","-y",gif.gifPath])
+                    arguments  = ["-ss",gif.range!.ss] + arguments //+ ["to",gif.range!.to]
+                    arguments  = arguments + ["to",gif.range!.to]
                 }else
                 {
-                    result = result + shell(self.ffmpeg,arguments:["-ss",gif.range!.ss,"-i",gif.path,"-to",gif.range!.to,"-vf",vf,"-y",palettePath])
-                    result = result + shell(self.ffmpeg,arguments:["-ss",gif.range!.ss,"-i",gif.path,"-to",gif.range!.to,"-i",palettePath,"-lavfi",lavfi,"-gifflags","+transdiff","-y",gif.gifPath])
+                }
+                
+                arguments += ["-gifflags","+transdiff","-y",gif.gifPath]
+
+                result = result + shell(self.ffmpeg,arguments:arguments)
+            }else
+            {
+                var vf    = ""
+                var lavfi = ""
+                
+                if size != nil
+                {
+                    vf = String(format: "fps=%d,scale=%d:%d:flags=lanczos,palettegen=stats_mode=diff",Int(gif.fps),Int(size!.width),Int(size!.height))
+                    lavfi = String(format: "fps=%d,scale=%d:%d:flags=lanczos  [x]; [x][1:v] paletteuse=dither=floyd_steinberg",Int(gif.fps),Int(size!.width),Int(size!.height))
+                }else{
+                    vf = String(format: "fps=%d,palettegen=stats_mode=diff",Int(gif.fps))
+                    lavfi = String(format: "fps=%d [x]; [x][1:v] paletteuse=dither=floyd_steinberg",Int(gif.fps))
+                }
+
+                if gif.range == nil
+                {
+                    result = result + shell(self.ffmpeg,arguments:["-i",gif.path,"-vf",vf,"-y",gif.palettePath])
+                    result = result + shell(self.ffmpeg,arguments:["-i",gif.path,"-i",gif.palettePath,"-lavfi",lavfi,"-gifflags","+transdiff","-y",gif.gifPath])
+                }else
+                {
+                    result = result + shell(self.ffmpeg,arguments:["-ss",gif.range!.ss,"-i",gif.path,"-to",gif.range!.to,"-vf",vf,"-y",gif.palettePath])
+                    result = result + shell(self.ffmpeg,arguments:["-ss",gif.range!.ss,"-i",gif.path,"-to",gif.range!.to,"-i",gif.palettePath,"-lavfi",lavfi,"-gifflags","+transdiff","-y",gif.gifPath])
                 }
                 
                 
@@ -146,26 +200,29 @@ class ZXConverter: NSObject {
             
             }
             
-            print(result)
+            if gif.quality.needCompress()
+            {
+                self.compress(gif)
+            }
             
-                if result.containsString("Invalid data found when processing input") == true
-                {
-                    dispatch_async(dispatch_get_main_queue()) {
-                        complete(success: false,path: nil)
-                    }//end main
-                }
-                else
-                {
-                    let b = gif.compress == true && gif.low == false
-                    if b
-                    {
-                        self.compress(gif)
-                    }
-                    dispatch_async(dispatch_get_main_queue()) {
-                        complete(success: true,path: (b) ? gif.comporesGifPath : gif.gifPath)
-                    }//end main
-                }
             
+
+
+
+            dispatch_async(dispatch_get_main_queue()) {
+            
+                let path = (gif.quality.needCompress()) ? gif.comporesGifPath : gif.gifPath
+                
+                if self.fm.fileExistsAtPath(path)
+                {
+                    complete(success: true,path: path)
+                }else
+                {
+                    complete(success: false,path: nil)
+                }
+                
+            }//end main
+        
         })//end background
     }
 
@@ -217,8 +274,8 @@ class ZXConverter: NSObject {
     
     func compress(gif:GIF)
     {
-         print("compress")
-        let q = String(format:"--lossy=%d",gif.quality)
+        print("start compress")
+        let q = String(format:"--lossy=%@",gif.quality.lossy())
         let result = shell(gifsicle,arguments:["-O3",q,"-o",gif.comporesGifPath,gif.gifPath])
         print(result)
     }
@@ -260,23 +317,20 @@ class ZXConverter: NSObject {
                 print(json)
                 
                 gif.path = path
-                gif.width    = CGFloat(json["streams"][0]["width"].floatValue)
-                gif.height   = CGFloat(json["streams"][0]["height"].floatValue)
+                gif.size = CGSizeMake(CGFloat(json["streams"][0]["width"].floatValue), CGFloat(json["streams"][0]["height"].floatValue))
                 gif.duration = json["format"]["duration"].doubleValue
                 
-                //542 309
-                
-                print(gif)
+                //400 225
+                //print(gif)
                 
                 var scale = ""
-                if gif.width/542 <  gif.height/309
+                if gif.size.width/400 <  gif.size.height/225
                 {
-                    scale = "scale=-1:309"
+                    scale = "scale=-1:225"
                 }else
                 {
-                    scale = "scale=542:-1"
+                    scale = "scale=400:-1"
                 }
-                
                 
                 
                 let _ = try? fm.removeItemAtPath(thumbPath)
@@ -362,6 +416,12 @@ class ZXConverter: NSObject {
 
 func shell(launchPath: String, arguments: [String]? = nil) -> String
 {
+    
+    print("shell:")
+    print(launchPath)
+    print(arguments)
+    print("========================")
+    
     let task = NSTask()
     task.launchPath = launchPath
     if arguments == nil
@@ -380,13 +440,7 @@ func shell(launchPath: String, arguments: [String]? = nil) -> String
     let data   = pipe.fileHandleForReading.readDataToEndOfFile()
     let output = String(data: data, encoding: NSUTF8StringEncoding) ?? ""
     
-    //dup2(pipe.fileHandleForReading.fileDescriptor, <#T##Int32#>)
-    
-    
-    /*
-     NSFileHandle *pipeReadHandle = [pipe fileHandleForReading] ;
-     dup2([[pipe fileHandleForWriting] fileDescriptor], fd) ;
-     */
+
     
     return output
 }
