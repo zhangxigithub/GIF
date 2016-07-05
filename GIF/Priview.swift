@@ -7,9 +7,14 @@
 //
 
 import Cocoa
-
+protocol PriviewDelegate :NSObjectProtocol
+{
+    func didClose()
+}
 class Priview: NSView {
 
+    weak var delegate:PriviewDelegate?
+    
     var images:[String]!
         {
         didSet{
@@ -66,6 +71,7 @@ class Priview: NSView {
     func close()
     {
         self.hidden = true
+        delegate?.didClose()
     }
     
     override func drawRect(dirtyRect: NSRect) {

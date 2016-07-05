@@ -16,6 +16,8 @@ class ViewController: GIFViewController,DragDropViewDelegate,RangeSliderDelegate
     @IBOutlet weak var bg: NSImageView!
     @IBOutlet weak var dragView: DragDropView!
     
+  
+    
     @IBOutlet weak var rangeSlider: RangeSlider!
     @IBOutlet weak var slider: NSSlider!
     
@@ -78,50 +80,7 @@ class ViewController: GIFViewController,DragDropViewDelegate,RangeSliderDelegate
     @IBAction func clickLock(sender: NSButton) {
         self.lock = !self.lock
     }
-    @IBAction func create(sender: AnyObject) {
-        
-        if gif == nil
-        {
-            return
-        }
-        
-        gif!.fps = fps.selectedItem!.tag
-        
-        
-        gif!.range = (ss:String(format: "%.2f",min(self.rangeSlider.startTime,self.rangeSlider.endTime)),to:String(format: "%.2f",max(self.rangeSlider.startTime,self.rangeSlider.endTime)))
-        
 
-
-        switch self.quality.selectedItem?.tag ?? 0{
-        case 1: gif!.quality = Quality.VeryLow
-        case 2: gif!.quality = Quality.Low
-        case 3: gif!.quality = Quality.Normal
-        case 4: gif!.quality = Quality.High
-        case 5: gif!.quality = Quality.VeryHigh
-        default: break
-        }
-        bg.image = NSImage(named: "loading")
-        indicator.hidden = false
-        indicator.startAnimation(nil)
-        
-        Swift.print(fps.selectedItem)
-        
-        let c = ZXConverter()
-        
-        c.convert(gif!, complete: { (success,path) in
-            
-            if success
-            {
-                self.save(path!)
-            }else
-            {
-                self.showErrorFile()
-            }
-            self.stopLoading()
-        })
-        
-        
-    }
     
     var gif : GIF?
     

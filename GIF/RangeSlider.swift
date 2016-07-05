@@ -18,7 +18,20 @@ class RangeSlider: NSView {
     
     weak var delegate : RangeSliderDelegate?
     
-    
+    var enabled:Bool = true{
+        didSet{
+            durationLine.layer?.backgroundColor = enabled ? blue : gray
+            leftLabel.textColor = enabled ? NSColor.blackColor() : NSColor.grayColor()
+            rightLabel.textColor = enabled ? NSColor.blackColor() : NSColor.grayColor()
+            if enabled == false
+            {
+                self.reset()
+                leftLabel.stringValue = "--:--"
+                rightLabel.stringValue = "--:--"
+            }
+        }
+    }
+    var track:NSTrackingRectTag?
     var leftLabel : NSTextField!
     var rightLabel : NSTextField!
     
@@ -49,6 +62,15 @@ class RangeSlider: NSView {
     let labelHeight:CGFloat = 20
     var timeWidth:CGFloat!
     
+    override func hitTest(aPoint: NSPoint) -> NSView? {
+        if enabled
+        {
+            return super.hitTest(aPoint)
+        }else
+        {
+            return nil
+        }
+    }
     func reset()
     {
         let lineFrame = NSMakeRect(leftSpace,labelHeight+dotSize.height/2-1.5,self.bounds.size.width-leftSpace-rightSpace,3)
@@ -77,7 +99,7 @@ class RangeSlider: NSView {
     required init?(coder: NSCoder) {
         
         super.init(coder: coder)
-        self.addTrackingRect(self.bounds, owner: self, userData: nil, assumeInside: true)
+        //self.enabled = true
         
         timeWidth = self.bounds.size.width - leftSpace - rightSpace
         
@@ -109,12 +131,12 @@ class RangeSlider: NSView {
         
         leftLabel = label()
         leftLabel.frame = NSMakeRect(begin.frame.origin.x + dotSize.width/2 - labelWidth/2, 0, labelWidth, 20)
-        leftLabel.stringValue = "00:00"
+        leftLabel.stringValue = "--:--"
         self.addSubview(leftLabel)
         
         rightLabel = label()
         rightLabel.frame = NSMakeRect(end.frame.origin.x + dotSize.width/2 - labelWidth/2, 0, labelWidth, 20)
-        rightLabel.stringValue = "10:00"
+        rightLabel.stringValue = "--:--"
         self.addSubview(rightLabel)
         
         //self.addSubview(begin)

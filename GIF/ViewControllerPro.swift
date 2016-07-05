@@ -10,8 +10,9 @@ import Cocoa
 import Foundation
 
 
-class ViewController: GIFViewController,DragDropViewDelegate,RangeSliderDelegate,NSTextFieldDelegate {
+class ViewController: GIFViewController,DragDropViewDelegate,RangeSliderDelegate,NSTextFieldDelegate,PriviewDelegate {
     
+    @IBOutlet weak var tipLabel: NSTextField!
     @IBOutlet weak var preview: Priview!
     @IBOutlet weak var bg: NSImageView!
     @IBOutlet weak var dragView: DragDropView!
@@ -23,13 +24,16 @@ class ViewController: GIFViewController,DragDropViewDelegate,RangeSliderDelegate
     @IBOutlet weak var quality: NSPopUpButton!
     @IBOutlet weak var fps: NSPopUpButton!
     
-    
+    @IBOutlet weak var convertButton: NSButton!
     
     @IBOutlet weak var indicator: NSProgressIndicator!
     
     
     @IBOutlet weak var widthLabel: NSTextField!
     @IBOutlet var heightLabel: NSTextField!
+    
+    
+    var converter = ZXConverter()
     
     
     
@@ -77,36 +81,49 @@ class ViewController: GIFViewController,DragDropViewDelegate,RangeSliderDelegate
     @IBAction func clickLock(sender: NSButton) {
         self.lock = !self.lock
     }
-    @IBAction func create(sender: AnyObject) {
+    @IBAction func create(sender: NSButton) {
         
         if gif == nil
         {
             return
         }
+        if sender.tag == 1
+        {
+            
+        }else
+        {
+            return
+        }
+        sender.tag = 2
+        sender.title = "Converting ..."
+        
+        
         
         gif!.fps = fps.selectedItem!.tag
+       
+        let minV = min(self.rangeSlider.startTime,self.rangeSlider.endTime)
+        let maxV = max(self.rangeSlider.startTime,self.rangeSlider.endTime)
+        let t   = maxV - minV
         
+        gif!.range = (ss:String(format: "%.2f",minV),t:String(format: "%.2f",t))
         
-        gif!.range = (ss:String(format: "%.2f",min(self.rangeSlider.startTime,self.rangeSlider.endTime)),to:String(format: "%.2f",max(self.rangeSlider.startTime,self.rangeSlider.endTime)))
-        
+        let qualityArray = [Quality.VeryLow,Quality.Low,Quality.Normal,Quality.High,Quality.VeryHigh]
+        let index = self.quality.selectedItem!.tag-1
+        gif!.quality = qualityArray[index]
 
-        switch self.quality.selectedItem?.tag ?? 0{
-        case 1: gif!.quality = Quality.VeryLow
-        case 2: gif!.quality = Quality.Low
-        case 3: gif!.quality = Quality.Normal
-        case 4: gif!.quality = Quality.High
-        case 5: gif!.quality = Quality.VeryHigh
-        default: break
-        }
-        bg.image = NSImage(named: "loading")
-        indicator.hidden = false
-        indicator.startAnimation(nil)
+
         
-        Swift.print(fps.selectedItem)
         
-        let c = ZXConverter()
+        self.indicator.hidden = false
+        self.indicator.startAnimation(nil)
         
-        c.convert(gif!, complete: { (success,path) in
+        converter.convert(gif!, complete: {[unowned self]  (success,path) in
+            
+
+            self.indicator.hidden = true
+            self.indicator.stopAnimation(nil)
+            
+            Swift.print(self.gif)
             
             if success
             {
@@ -116,6 +133,8 @@ class ViewController: GIFViewController,DragDropViewDelegate,RangeSliderDelegate
                 self.showErrorFile()
             }
             self.stopLoading()
+            sender.tag = 1
+            sender.title = "Convert To GIF"
         })
         
         
@@ -126,19 +145,20 @@ class ViewController: GIFViewController,DragDropViewDelegate,RangeSliderDelegate
     func loadFile(file: String)
     {
         
-        let c = ZXConverter()
         
         self.startLoading()
         
-        c.loadGIF(file) { (gif,error) in
+        converter.loadGIF(file) { [unowned self] (gif,error) in
+            
+
             
             print(gif)
-            
+            self.stopLoading()
+            self.configOption(true)
             let info = gif.valid()
             if info.valid
             {
                 self.gif = gif
-                self.startLoading()
                 self.showPreview(gif)
                 self.configOptions(gif)
             }else
@@ -152,6 +172,9 @@ class ViewController: GIFViewController,DragDropViewDelegate,RangeSliderDelegate
     
     func receivedFiles(file: String)
     {
+        didClose()
+        
+        
         self.loadFile(file)
     }
     
@@ -181,7 +204,7 @@ class ViewController: GIFViewController,DragDropViewDelegate,RangeSliderDelegate
         Swift.print(file)
         let panel = NSSavePanel()
         panel.nameFieldStringValue = (file as NSString).lastPathComponent
-        panel.beginWithCompletionHandler { (result) in
+        panel.beginWithCompletionHandler { [unowned self] (result) in
             
             if result == NSFileHandlingPanelOKButton
             {
@@ -199,18 +222,33 @@ class ViewController: GIFViewController,DragDropViewDelegate,RangeSliderDelegate
             }
         }
     }
+    
+    func didClose() {
+        preview.hidden = true
+        convertButton.title = "Convert To GIF"
+        convertButton.tag = 1
+        self.indicator.stopAnimation(nil)
+        self.converter.stop()
+        self.converter = ZXConverter()
+        self.gif = nil
+        configOption(false)
+    }
 
     func startLoading()
     {
-        bg.image = NSImage(named: "loading")
+        bg.image = NSImage(named: "bg_empty")
         indicator.hidden = false
         indicator.startAnimation(nil)
+        
+        self.tipLabel.stringValue = "loading"
     }
     func stopLoading()
     {
         self.bg.image = NSImage(named: "bg")
         self.indicator.hidden = true
         self.indicator.stopAnimation(nil)
+        
+        self.tipLabel.stringValue = ""
     }
     
     
@@ -221,14 +259,40 @@ class ViewController: GIFViewController,DragDropViewDelegate,RangeSliderDelegate
         self.preview.frameIndex = index
     }
     
+    func configOption(enable:Bool)
+    {
+        if enable
+        {
+            self.rangeSlider.enabled = true
+            self.widthLabel.enabled = true
+            self.heightLabel.enabled = true
+            self.quality.enabled = true
+            self.fps.enabled = true
+        }else
+        {
+            self.rangeSlider.enabled = false
+            self.widthLabel.enabled = false
+            self.heightLabel.enabled = false
+            self.quality.enabled = false
+            self.fps.enabled = false
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        
+        
+        
+        self.configOption(false)
+        
+        self.tipLabel.stringValue = ""
         
         self.dragView.delegate = self
         self.indicator.hidden = true
         self.rangeSlider.delegate = self
         self.preview.hidden = true
+        self.preview.delegate = self
         
         self.fps.selectItemWithTag(12)
         self.quality.selectItemWithTag(1)

@@ -40,7 +40,7 @@ enum Quality {
 
 class GIF: NSObject
 {
-    var range : (ss:String,to:String)? = nil
+    var range : (ss:String,t:String)? = nil
     var quality : Quality = .Normal
     var fps:Int = 12
     
@@ -137,10 +137,43 @@ class ZXConverter: NSObject {
     let gifsicle = NSBundle.mainBundle().pathForResource("gifsicle", ofType: "")!
     let fm       = NSFileManager.defaultManager()
   
+    var convertQueue: dispatch_queue_t? = dispatch_queue_create("me.zhnagxi.convert", nil)
     
+    override init() {
+        super.init()
+        //resetQueue()
+    }
+    var stopTask:Bool = false
+    func stop()
+    {
+        stopTask = true
+        //resetQueue()
+        
+//        for task in tasks
+//        {
+//            print(task)
+//            task.terminate()
+//        }
+//        tasks.removeAll()
+    }
+    var tasks = [NSTask]()
+    
+    func resetQueue()
+    {
+        if convertQueue != nil
+        {
+            dispatch_suspend(convertQueue!)
+            convertQueue = nil
+            convertQueue = dispatch_queue_create("me.zhnagxi.convert", nil)
+        }
+        
+    }
     func convert(gif:GIF,complete:(success:Bool,path:String?)->Void)
     {
-        dispatch_async(dispatch_get_global_queue(QOS_CLASS_USER_INITIATED, 0), { () -> Void in
+        
+        stopTask = false
+        
+        dispatch_async(convertQueue!, {[unowned self] () -> Void in
             
             print(gif.description)
             gif.clean()
@@ -163,14 +196,16 @@ class ZXConverter: NSObject {
                 if gif.range != nil
                 {
                     arguments  = ["-ss",gif.range!.ss] + arguments //+ ["to",gif.range!.to]
-                    arguments  = arguments + ["to",gif.range!.to]
+                    arguments  = arguments + ["-t",gif.range!.t]
                 }else
                 {
                 }
                 
                 arguments += ["-gifflags","+transdiff","-y",gif.gifPath]
 
-                result = result + shell(self.ffmpeg,arguments:arguments)
+                //if self.stopTask { return }
+                result = result + self.shell(self.ffmpeg,arguments:arguments)
+                //if self.stopTask { return }
             }else
             {
                 var vf    = ""
@@ -185,39 +220,41 @@ class ZXConverter: NSObject {
                     lavfi = String(format: "fps=%d [x]; [x][1:v] paletteuse=dither=floyd_steinberg",Int(gif.fps))
                 }
 
+                //if self.stopTask { return }
                 if gif.range == nil
                 {
-                    result = result + shell(self.ffmpeg,arguments:["-i",gif.path,"-vf",vf,"-y",gif.palettePath])
-                    result = result + shell(self.ffmpeg,arguments:["-i",gif.path,"-i",gif.palettePath,"-lavfi",lavfi,"-gifflags","+transdiff","-y",gif.gifPath])
+                    result = result + self.shell(self.ffmpeg,arguments:["-i",gif.path,"-vf",vf,"-y",gif.palettePath])
+                    if self.stopTask { return }
+                    result = result + self.shell(self.ffmpeg,arguments:["-i",gif.path,"-i",gif.palettePath,"-lavfi",lavfi,"-gifflags","+transdiff","-y",gif.gifPath])
                 }else
                 {
-                    result = result + shell(self.ffmpeg,arguments:["-ss",gif.range!.ss,"-i",gif.path,"-to",gif.range!.to,"-vf",vf,"-y",gif.palettePath])
-                    result = result + shell(self.ffmpeg,arguments:["-ss",gif.range!.ss,"-i",gif.path,"-to",gif.range!.to,"-i",gif.palettePath,"-lavfi",lavfi,"-gifflags","+transdiff","-y",gif.gifPath])
+                    result = result + self.shell(self.ffmpeg,arguments:["-ss",gif.range!.ss,"-t",gif.range!.t,"-i",gif.path,"-vf",vf,"-y",gif.palettePath])
+                    //if self.stopTask { return }
+                    result = result + self.shell(self.ffmpeg,arguments:["-ss",gif.range!.ss,"-t",gif.range!.t,"-i",gif.path,"-i",gif.palettePath,"-lavfi",lavfi,"-gifflags","+transdiff","-y",gif.gifPath])
                 }
-                
-                
-
-            
+                //if self.stopTask { return }
             }
+            
+            print(result)
             
             if gif.quality.needCompress()
             {
                 self.compress(gif)
             }
-            
-            
-
-
+            //if self.stopTask { return }
 
             dispatch_async(dispatch_get_main_queue()) {
             
-                let path = (gif.quality.needCompress()) ? gif.comporesGifPath : gif.gifPath
+
+                let path = gif.quality.needCompress() ? gif.comporesGifPath : gif.gifPath
                 
                 if self.fm.fileExistsAtPath(path)
                 {
+                    //if self.stopTask { return }
                     complete(success: true,path: path)
                 }else
                 {
+                    //if self.stopTask { return }
                     complete(success: false,path: nil)
                 }
                 
@@ -226,49 +263,7 @@ class ZXConverter: NSObject {
         })//end background
     }
 
-    
-    /*
-    func convert(path:String,complete:(success:Bool,path:String?)->Void)
-    {
-        
-        dispatch_async(dispatch_get_global_queue(QOS_CLASS_USER_INITIATED, 0), { () -> Void in
-            
-            var component = (path as NSString).lastPathComponent.componentsSeparatedByString(".")
-            let fileName = String(format: "%@.gif",component[0])
-            
-            let filePath = String(format: "%@/%@",folderPath,fileName)
-            let fm = NSFileManager.defaultManager()
-            do{
-                try fm.removeItemAtPath(filePath)
-                try fm.removeItemAtPath(palettePath)
-            }catch{}
 
-
-            let a = shell(self.ffmpeg,arguments:["-i",path,"-vf","fps=12,scale=320:-1:flags=lanczos,palettegen=stats_mode=diff","-y",palettePath])
-            
-            let b = shell(self.ffmpeg,arguments:["-i",path,"-i",palettePath,"-lavfi","fps=12,scale=320:-1:flags=lanczos  [x]; [x][1:v] paletteuse","-gifflags","+transdiff","-y",filePath])
-            
-            
-            dispatch_async(dispatch_get_main_queue()) {
-                
-                
-                if a.containsString("Invalid data found when processing input") == true ||
-                    b.containsString("Invalid data found when processing input") == true
-                {
-                    //print("false!!!!")
-                    complete(success: false,path: nil)
-                }
-                else
-                {
-                    //print("true!!!!")
-                    complete(success: true,path:filePath)
-                }
-            }
-            
-        })
-    }
-    */
-    
 
     
     
@@ -282,6 +277,7 @@ class ZXConverter: NSObject {
     
     func loadGIF(path:String,complete:(gif:GIF,err:String)->Void)
     {
+        stopTask = false
         /*
          http://stackoverflow.com/questions/7708373/get-ffmpeg-information-in-friendly-way
          */
@@ -296,18 +292,18 @@ class ZXConverter: NSObject {
             print(size)
             if size > 100
             {
-                complete(gif: gif, err: "GIF Works can only convert file less than 100MB.")
+                complete(gif: gif, err: "GIF Works Pro can only convert file less than 100MB.")
                 return
             }
         }
         
 
-        dispatch_async(dispatch_get_global_queue(QOS_CLASS_USER_INITIATED, 0), { () -> Void in
+        dispatch_async(convertQueue!, { () -> Void in
             //"-show_streams"
             //"-show_format"
             //let arguments = ["-v","quiet","-print_format","json","-select_streams","v:0","-show_format","-show_entries","stream=height,width,r_frame_rate",path]
                         let arguments = ["-v","quiet","-print_format","json","-select_streams","v:0","-show_format","-show_streams",path]
-            let result = shell(self.ffprobe,arguments:arguments)
+            let result = self.shell(self.ffprobe,arguments:arguments)
             let data = try? NSJSONSerialization.JSONObjectWithData(result.dataUsingEncoding(NSUTF8StringEncoding)!, options:.AllowFragments)
             
             if data != nil
@@ -341,7 +337,7 @@ class ZXConverter: NSObject {
                 r = min(r,6)
                 r = max(r,1)
                 let arguments =  ["-i",path,"-r",String(format:"%.0d",Int(r)),"-vf",scale,thumbPath.stringByAppendingString("/t%5d.jpg")]
-                shell(self.ffmpeg,arguments:arguments)
+                self.shell(self.ffmpeg,arguments:arguments)
                 
                 var files = [String]()
                 do{
@@ -387,7 +383,7 @@ class ZXConverter: NSObject {
             
             
             let arguments =  ["-i",path,"-r","6","-vf","scale=200:-1",thumbPath.stringByAppendingString("/t%5d.jpg")]
-            let _ = shell(self.ffmpeg,arguments:arguments)
+            let _ = self.shell(self.ffmpeg,arguments:arguments)
             //print(result)
             
             var files = [String]()
@@ -403,6 +399,10 @@ class ZXConverter: NSObject {
             
 
 
+            if self.stopTask
+            {
+                return
+            }
             dispatch_async(dispatch_get_main_queue()) {
                 complete(dir: files)
             }
@@ -412,38 +412,47 @@ class ZXConverter: NSObject {
     }
     
     
-}
+    func shell(launchPath: String, arguments: [String]? = nil) -> String
+    {
 
-func shell(launchPath: String, arguments: [String]? = nil) -> String
-{
-    
-    print("shell:")
-    print(launchPath)
-    print(arguments)
-    print("========================")
-    
-    let task = NSTask()
-    task.launchPath = launchPath
-    if arguments == nil
-    {
-        task.arguments = [String]()
-    }else
-    {
-        task.arguments = arguments
+        if stopTask
+        {
+            return ""
+        }
+        print("shell:")
+        print(launchPath)
+        print(arguments)
+        print("========================")
+        
+        let task = NSTask()
+        tasks.append(task)
+        
+        task.launchPath = launchPath
+        if arguments == nil
+        {
+            task.arguments = [String]()
+        }else
+        {
+            task.arguments = arguments
+        }
+        
+        let pipe = NSPipe()
+        task.standardOutput = pipe
+        task.standardError  = pipe
+        task.launch()
+        
+        let data   = pipe.fileHandleForReading.readDataToEndOfFile()
+        let output = String(data: data, encoding: NSUTF8StringEncoding) ?? ""
+        
+        
+        
+        return output
     }
     
-    let pipe = NSPipe()
-    task.standardOutput = pipe
-    task.standardError  = pipe
-    task.launch()
     
-    let data   = pipe.fileHandleForReading.readDataToEndOfFile()
-    let output = String(data: data, encoding: NSUTF8StringEncoding) ?? ""
-    
-
-    
-    return output
 }
+
+
 
 /*
  
